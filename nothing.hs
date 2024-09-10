@@ -1,4 +1,3 @@
-import Distribution.Compat.Lens (_1)
 data Exp = UNIT
     | TRUE
     | FALSE
@@ -77,7 +76,7 @@ eval (DIV e0 e1) env=
             case (v0, v1) of
                 (INT n0, INT n1) -> INT $ div n0 n1
                 _ -> error "UserFault"
- {-               
+{-      
 eval (EQUAL e0 e1) env =
         case (eval e0 env, eval e1 env) of
             (INT e0, INT e1) -> if e0==e1 then BOOL True else BOOL False
@@ -92,11 +91,11 @@ eval (NOT e) _ =
 
 
 eval (ISZERO e) env =
-    let INT n = eval e env in
-        case n of
-            0 -> BOOL True
-            _ -> BOOL False
-
+    case eval e env of
+        INT n 
+            | n == 0 -> BOOL True
+            | n /= 0 -> BOOL False
+        _ -> error "UserFault"
 
 eval (IF e0 e1 e2) env =
    case eval e0 env of
@@ -108,6 +107,7 @@ eval (LET x e0 e1) env =
     let v = eval e0 env in
         eval e1 (extEnv [(x,v)] env)
 
+eval (ISNULL e) env = eval (EQUAL e NULL) env
+
 eval TRUE _ = BOOL True
 eval FALSE _ = BOOL False
-
