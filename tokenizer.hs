@@ -16,6 +16,7 @@ data TokenType = LEFTPARAN
                 | NUM
                 | UPPERCASE
                 | LOWERCASE
+                | EQUAL
             deriving (Show)
 
 type Token = ([Char], TokenType)
@@ -36,6 +37,8 @@ tokenizer (s:ss)  =
         '#' -> ([s], SHARP) : tokenizer ss
         '~' -> ([s], WAVEDASH) : tokenizer ss
         '>' -> ([s], GREATERTHEN) : tokenizer ss
+        '=' -> ([s], EQUAL) : tokenizer ss
+        ' ' -> tokenizer ss
         _ -> if isDigit s 
                 then (takeWhile isDigit (s:ss), NUM) 
                     : tokenizer (dropWhile isDigit ss)
