@@ -10,13 +10,13 @@ data Exp = UNIT
     | EQUAL Exp Exp
     | LESS Exp Exp
     | NOT Exp
-    | NULL
+    | EMPTY
     | CONS Exp Exp
     | APPEND Exp Exp
     | HEAD Exp
     | TAIL Exp
     | ISZERO Exp
-    | ISNULL Exp
+    | ISEMPTY Exp
     | IF Exp Exp Exp
     | LET Var Exp Exp
     | LETREC Var Var Exp Exp
@@ -107,7 +107,7 @@ eval (LET x e0 e1) env =
     let v = eval e0 env in
         eval e1 (extEnv [(x,v)] env)
 
-eval (ISNULL e) env = eval (EQUAL e NULL) env
+eval (ISEMPTY e) env = eval (EQUAL e EMPTY) env
 
 eval TRUE _ = BOOL True
 eval FALSE _ = BOOL False
